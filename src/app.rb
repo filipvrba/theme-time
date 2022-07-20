@@ -21,7 +21,9 @@ def theme_active(style)
     %x(#{command})
   end
 
-  puts "Theme: #{style}"
+  unless @options[:is_fork]
+    puts "Theme: #{style}"
+  end
 end
 
 def loop time_cycle
@@ -66,5 +68,12 @@ if @options[:in] or @options[:out] or
           command: @options[:command]}
   @store.set_data data
 else
-  main()
+  if @options[:is_fork]
+    pid = fork do
+      main()
+    end
+    puts pid
+  else
+    main()
+  end
 end

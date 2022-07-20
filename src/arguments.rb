@@ -4,6 +4,7 @@ require absolute_path("../../lib/index")
 
 @options = {
   is_dev: false,
+  is_fork: false,
   is_store: false,
   in: nil,
   out: nil,
@@ -18,6 +19,9 @@ OptionParser.parse do |parser|
   end
   parser.on( "-d", "--dev", "Develop mode" ) do
     @options[:is_dev] = true
+  end
+  parser.on( "-f", "--fork", "Fork mode" ) do
+    @options[:is_fork] = true
   end
   parser.on( "-gs", "--get-store", "Show a store via formatted json." ) do
     @options[:is_store] = true
