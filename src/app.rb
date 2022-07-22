@@ -30,10 +30,14 @@ def loop time_cycle
   while true
     # True  - light
     # False - dark
-    is_active_time_zone = get_hour >= @store.data.call("in").to_i &&
-                          get_hour >= @store.data.call("out").to_i
+    # is_active_time_zone = get_hour < @store.data.call("in").to_i ||
+    #                       get_hour >= @store.data.call("out").to_i
+    is_night = get_hour < @store.data.call("in").to_i ||
+               get_hour >= @store.data.call("out").to_i
+    is_day   = get_hour >= @store.data.call("in").to_i &&
+               get_hour < @store.data.call("out").to_i
     
-    unless is_active_time_zone              # 1 bit flag
+    if is_day              # 1 bit flag
       unless @is_one_activate_cycle.(1)
         @active_cycle_bit |= 1
 
@@ -42,7 +46,7 @@ def loop time_cycle
         end
         theme_active("light")
       end
-    else                                    # 2 bit flag
+    elsif is_night                                    # 2 bit flag
       unless @is_one_activate_cycle.(2)
         @active_cycle_bit |= 2
         if @is_one_activate_cycle.(1)
