@@ -8,6 +8,18 @@ def get_hour
   Time.now.hour
 end
 
+def running?
+  pid = Process.pid
+  pid_term = %x(pgrep -f theme-time)
+
+  if pid != pid_term.to_i
+    puts "This #{pid_term.to_i} pid still running in process."
+    return true
+  end
+
+  return false
+end
+
 def main
   @active_cycle_bit = 0
   @is_one_activate_cycle = -> (bit) {@active_cycle_bit & bit != 0}
@@ -72,6 +84,10 @@ if @options[:in] or @options[:out] or
           command: @options[:command]}
   @store.set_data data
 else
+  if running?
+    exit
+  end
+
   if @options[:is_fork]
     pid = fork do
       main()
