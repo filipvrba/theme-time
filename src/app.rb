@@ -1,6 +1,7 @@
 require_relative "store"
 require_relative "arguments"
 require_relative "signals"
+require_relative "helper"
 
 require "time"
 
@@ -10,7 +11,7 @@ end
 
 def running?
   pid = Process.pid
-  pid_term = %x(pgrep -f theme-time)
+  pid_term = pid_term()
 
   if pid != pid_term.to_i
     puts "This #{pid_term.to_i} pid still running in process."
@@ -75,6 +76,14 @@ end
 if @options[:is_store]
   puts @store.to_s
   exit
+end
+
+sig_update_store do
+  @store.update
+
+  unless @options[:is_fork]
+    puts "Update: #{@store.data_store}"
+  end
 end
 
 if @options[:in] or @options[:out] or

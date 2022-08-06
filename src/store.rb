@@ -1,15 +1,17 @@
 require "json"
 
 require_relative "helper"
+require_relative "data"
 
-class Store
+class Store < Data
   attr_reader :data
 
   def initialize
     @@absolute_path_handler = -> () {absolute_path("../../share/store.json")}
-    @@get_data_handler = -> (value) {get_data[value]}
+    @@get_data_handler = -> (value) { @data_store[value] }
 
     @data = @@get_data_handler
+    super
   end
 
   def set_data data
@@ -26,10 +28,15 @@ class Store
     end
 
     write_data json_obj, @@absolute_path_handler.call
+    Process.kill("USR1", pid_term().to_i)
   end
 
   def to_s
     open_data @@absolute_path_handler.call
+  end
+
+  def update
+    set_data_store()
   end
 
   private
@@ -62,5 +69,12 @@ class Store
       data = JSON.parse data
     end
     return data
+  end
+
+  def set_data_store
+    data = get_data
+    data.each do |k,v|
+      @data_store[k] = v
+    end
   end
 end
