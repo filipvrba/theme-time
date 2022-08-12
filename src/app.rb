@@ -30,7 +30,7 @@ end
 
 def theme_active(style)
   unless @options[:is_dev]
-    command = @store.data.call("command").to_s.sub('*', style)
+    command = @store.data.call("command").to_s << " #{style}"
     %x(#{command})
   end
 

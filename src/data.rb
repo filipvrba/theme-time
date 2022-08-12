@@ -1,4 +1,5 @@
 class Data
+  attr_reader :data_store
   STORE = Struct.new(:in, :out, :command)
 
   def initialize

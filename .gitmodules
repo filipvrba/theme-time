@@ -1,0 +1,3 @@
+[submodule "lib/option-parser"]
+        path = lib/option-parser
+        url = git@github.com:filipvrba/option-parser.git

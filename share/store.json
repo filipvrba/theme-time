@@ -1,5 +1,5 @@
 {
   "in": "7",
   "out": "20",
-  "command": "theme *"
+  "command": "theme"
 }
