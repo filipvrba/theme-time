@@ -30,7 +30,7 @@ end
 
 def theme_active(style)
   unless @options[:is_dev]
-    command = @store.data.call("command").to_s << " #{style}"
+    command = @store.data.call("command").to_s + " #{style}"
     %x(#{command})
   end
 
@@ -80,7 +80,7 @@ end
 
 sig_update_store do
   @store.update
-
+  
   unless @options[:is_fork]
     puts "Update: #{@store.data_store}"
   end
